@@ -4,16 +4,17 @@
 */
 
 state("ReplayleeWin64", "Unknown - Using Latest"){
-	byte DoneLoading : "GameAssembly.dll", 0x5D39048, 0x80, 0x870, 0xA0, 0x30, 0x40;
+	byte Loading : "UnityPlayer.dll", 0x1F10318, 0xB4;
 }
 state("ReplayleeWin64", "Steam 1.00 (2025)"){
-	byte DoneLoading : "GameAssembly.dll", 0x5D39028, 0x80, 0x838, 0xA0, 0x30, 0x40; //Unknown validity
+	byte Loading : "UnityPlayer.dll", 0x1F10318, 0xB4;
 }
 state("ReplayleeWin64", "Non-Steam 1.00 (2025)"){
-	byte DoneLoading : "GameAssembly.dll", 0x5D39028, 0x80, 0x838, 0xA0, 0x30, 0x40;
+	byte Loading : "UnityPlayer.dll", 0x1F10318, 0xB4;
 }
 state("ReplayleeWin64", "Steam 1.01 (2025)"){
-	byte DoneLoading : "GameAssembly.dll", 0x5D39048, 0x80, 0x870, 0xA0, 0x30, 0x40;
+	byte Loading : "UnityPlayer.dll", 0x1F10318, 0xB4;
+	//int  Pagies  : "UnityPlayer.dll", 0x0, 0x0, 0x0, 0x0; this shit doesn't exist
 }
 
 // TODO - Determine memory location for # of Pagies in-game.  When done, uncomment all locations below.
@@ -56,8 +57,12 @@ init{
 	vars.accumulativeLoads = 0;
 }
 
+onStart{
+	vars.accumulativeLoads = 0;
+}
+
 start{
-	if(current.DoneLoading == 69){	//Needs more checks.
+	if(current.Loading == 69){		//Needs more checks.
 		vars.accumulativeLoads = 0;		//Resets totals when starting new run
 		return true;	//Starts timer
 	}
@@ -68,12 +73,12 @@ shutdown{
 }
 
 isLoading{
-	return current.DoneLoading == 0;		//Stops timer when Loading
+	return current.Loading == 2;		//Stops timer when Loading
 }
 
 split{
 	//Split on Load
-	if(current.DoneLoading == 0 && old.DoneLoading == 1){       			//If loading starts
+	if(current.Loading == 2 && old.Loading == 0){       					//If loading starts
 		vars.accumulativeLoads++;											//total number of loads increases
 		if(settings[vars.accumulativeLoads.ToString() + " loads"]){ 		//if total loads is a selected number
 			return true;													//split
