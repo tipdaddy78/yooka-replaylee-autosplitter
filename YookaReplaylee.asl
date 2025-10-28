@@ -117,8 +117,8 @@ onStart{	//When the timer starts
 }
 
 start{		//Auto-Start conditions
-	if(!settings[vars.ILMode] && current.Loading == 2 && current.Pagies == 0){
-		return true;	//Starts timer when loading (or creating a new) a file with zero pagies. Could add a sceneID check.
+	if(!settings[vars.ILMode] && current.Loading == 0 && old.Loading == 2 && current.Pagies == 0){
+		return true;	//Starts timer after loading (or creating new) into a file with zero pagies. Could use a sceneID check for the title screen.
 	}
 	else if(settings[vars.ILMode] && settings["ILModeStart"] && current.Loading == 0 && old.Loading == 2){
 		return true;	//Starts timer when loading finishes (entering world) and IL Mode is enabled
